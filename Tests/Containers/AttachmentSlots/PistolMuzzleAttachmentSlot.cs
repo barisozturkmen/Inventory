@@ -1,13 +1,11 @@
-using System;
-using System.Collections.Generic;
-using Inventory.Interfaces;
+using Inventory.Abstractions;
+using Inventory.ItemCategories;
 
 namespace Inventory.Tests
 {
-    public class PistolMuzzleAttachmentSlot : IAttachmentSlot
+    public class PistolMuzzleAttachmentSlot : AttachmentSlot
     {
-        public IItem? ContainedItem { get; set; }
-        public string Name { get; } = "Muzzle Slot";
-        public IEnumerable<Type> AllowedItems { get; } = new [] { typeof(IPistolMuzzleAttachment) };
+        public override string Name { get; protected init; } = "Muzzle Slot";
+        public override Allowed Allowed { get; protected init; } = Allowed.PistolMuzzle;
     }
 }

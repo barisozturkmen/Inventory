@@ -1,7 +1,4 @@
-﻿using System;
-using Inventory.Interfaces;
-
-namespace Inventory
+﻿namespace Inventory
 {
     public struct Slot : IEquatable<Slot>
     {

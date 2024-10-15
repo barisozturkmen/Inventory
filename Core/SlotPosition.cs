@@ -1,8 +1,6 @@
-using System;
-
 namespace Inventory
 {
-    public struct SlotPosition : IEquatable<SlotPosition>
+    public readonly struct SlotPosition : IEquatable<SlotPosition>
     {
         public SlotPosition(int column, int row)
         {
@@ -10,8 +8,8 @@ namespace Inventory
             Row = row;
         }
 
-        public int Column { get; private set; }
-        public int Row { get; private set; }
+        public int Column { get; }
+        public int Row { get; }
         
         public bool Equals(SlotPosition other)
         {

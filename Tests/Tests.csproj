@@ -24,4 +24,9 @@
         <ProjectReference Include="..\Core\Core.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="ItemContainers\" />
+      <Folder Include="Items\Attachments\WeaponMods\MainGripAttachments\" />
+    </ItemGroup>
+
 </Project>

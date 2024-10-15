@@ -1,24 +1,28 @@
-using Inventory.Commands;
-using Inventory.Interfaces;
+using Inventory.Abstractions;
 
 namespace Inventory.Interactions
 {
-    public class InteractionContext
+    public static class InteractionContext
     {
-        public IItem Item { get; set; }
-        public IInteractionTarget? Target { get; set; }
-        public Slot[]? DestinationSlots { get; set; }
-        public ItemCommand? Interaction { get; set; }
+        public static InteractionSelection? Selection { get; set; }
+        public static IContainer? HoveredTarget { get; set; }
+        public static InteractionDestination? Target { get; set; }
 
-        public InteractionContext(IItem item)
+        public static void Select(InteractionSelection selection)
         {
-            Item = item;
+            Clear();
+            Selection = selection;
         }
-        
-        public InteractionContext(IItem item, IInteractionTarget target)
+
+        public static void SetTarget(InteractionDestination destination)
         {
-            Item = item;
-            Target = target;
+            Target = destination;
+        }
+
+        private static void Clear()
+        {
+            Selection = null;
+            Target = null;
         }
     }
 }

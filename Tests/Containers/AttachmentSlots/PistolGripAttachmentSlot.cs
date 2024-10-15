@@ -1,13 +1,11 @@
-using System;
-using System.Collections.Generic;
-using Inventory.Interfaces;
+using Inventory.Abstractions;
+using Inventory.ItemCategories;
 
 namespace Inventory.Tests
 {
-    public class PistolGripAttachmentSlot : IAttachmentSlot
+    public class PistolGripAttachmentSlot : AttachmentSlot
     {
-        public string Name { get; } = "Pistol Grip Slot";
-        public IItem? ContainedItem { get; set; } = null;
-        public IEnumerable<Type> AllowedItems { get; } = new [] { typeof(IPistolMuzzleAttachment) };
+        public override string Name { get; protected init; } = "Pistol Grip Slot";
+        public override Allowed Allowed { get; protected init; } = Allowed.PistolMainGrips;
     }
 }

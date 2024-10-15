@@ -1,13 +1,15 @@
-using System.Collections.Generic;
-using Inventory.Interfaces;
+using Inventory.Abstractions;
 
 namespace Inventory.Tests
 {
-    public class Pistol : IWeapon
+    public class Pistol : ModableWeapon
     {
-        public string Name { get; } = "Pistol";
-        public Dimensions ItemDimensions { get; } = new(1, 2);
-        public IEnumerable<IAttachmentSlot> AttachmentSlots { get; } = new IAttachmentSlot[]
-            { new PistolMuzzleAttachmentSlot(), new PistolGripAttachmentSlot() };
+        public override string Name { get; } = "Pistol";
+        public override Dimensions ItemDimensions { get; } = new(1, 2);
+        public List<AttachmentSlot> AttachmentSlots { get; } =
+            [
+                new PistolMuzzleAttachmentSlot(), 
+                new PistolGripAttachmentSlot()
+            ];
     }
 }

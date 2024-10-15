@@ -1,11 +1,10 @@
-using System.Collections.Generic;
-using System.Linq;
-using Inventory.Interfaces;
+using Inventory.Abstractions;
 
 namespace Inventory.Interactions
 {
     public static class ContainerExtensions
     {
+        //change to visitor pattern
         public static IEnumerable<IContainer> GetSubContainers(this IContainer container)
         {
             List<IContainer> subContainers = new();

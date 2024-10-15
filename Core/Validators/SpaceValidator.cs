@@ -1,61 +1,74 @@
-using System.Collections.Generic;
-using System.Linq;
+using Inventory.Abstractions;
 using Inventory.Interactions;
-using Inventory.Interfaces;
 
 namespace Inventory.Validators
 {
-    public class SpaceValidator: IInteractionValidator
+    public static class SpaceValidator
     {
-        public static bool Validate(InteractionContext context)
+        public static bool ValidateSpace(this InteractionDestination destination, IItem item)
         {
-            switch (context.Target)
+            switch (destination)
             {
-                case ISingleItemContainer singleItemContainer:
-                    return !singleItemContainer.Occupied;
-                case ISlotContainer slotContainer when
-                    context.DestinationSlots is not null:
-                {
-                    if (AreSlotsOccupied(context, slotContainer)) 
-                        return false;
-
-                    if (!ItemFitsContainerAtPosition(context, slotContainer)) 
-                        return false;
-
-                    return true;
-                }
+                case SingleContainerDestination toSingleItemContainer:
+                    return toSingleItemContainer.ValidateSpace(item);
+                case SlotsDestination toSlotContainer:
+                    return toSlotContainer.ValidateSpace(item);
+                default:
+                    return false;
             }
+        }
+        
+        public static bool ValidateSpace(this SingleContainerDestination singleDestination, IItem item)
+        {
+            if (singleDestination.Target is ISingleContainer singleItemContainer)
+                return !singleItemContainer.Occupied;
+
+            return false;
+        }
+        
+        public static bool ValidateSpace(this SlotsDestination slotsDestination, IItem item)
+        {
+            if (slotsDestination.Target is not ISlotContainer slotContainer) 
+                return false;
+            
+            Slot[] targetSlots = slotsDestination.TargetSlots;
+            if (AreSlotsOccupied(item, slotContainer, targetSlots))
+                return false;
+
+            if (IsInvalidPosition(item.ItemDimensions, slotContainer, targetSlots))
+                return false;
 
             return true;
         }
 
-        private static bool AreSlotsOccupied(InteractionContext context, ISlotContainer slotContainer)
+        // Reuse this for find slots
+        private static bool AreSlotsOccupied(IItem item, ISlotContainer slotContainer, Slot[] targetSlots)
         {
-            Dictionary<Slot, IItem?> subset = context.DestinationSlots!
-                .Select(s =>
-                    new KeyValuePair<Slot, IItem?>(s,
-                        slotContainer.SlotsToItems[s]))
+            Dictionary<Slot, IItem?> targetSlotsToItems = targetSlots
+                .Select(s => new KeyValuePair<Slot, IItem?>(s, slotContainer.SlotsToItems[s]))
                 .ToDictionary();
             
-            bool occupied = subset.Any(kvp => 
-                kvp.Value is not null || 
-                kvp.Value != context.Item);
+            bool occupied = targetSlotsToItems.Any(kvp => 
+                kvp.Value is not null && 
+                kvp.Value != item);
 
             return occupied;
         }
         
-        private static bool ItemFitsContainerAtPosition(InteractionContext context, ISlotContainer slotContainer)
+        // Reuse this for find slots
+        private static bool IsInvalidPosition(
+            Dimensions itemDimensions, 
+            ISlotContainer slotContainer, 
+            Slot[] targetSlots)
         {
-            Dimensions itemDimensions = context.Item.ItemDimensions;
-
-            int leftMostCol = context.DestinationSlots!.Min(s => s.Position.Column);
-            int topMostRow = context.DestinationSlots!.Min(s => s.Position.Row);
+            int leftMostCol = targetSlots.Min(s => s.Position.Column);
+            int topMostRow = targetSlots.Min(s => s.Position.Row);
             
-            if (leftMostCol + itemDimensions.Columns > slotContainer.ContainerDimensions.Columns ||
-                topMostRow + itemDimensions.Rows > slotContainer.ContainerDimensions.Rows)
-                return false;
+            if (leftMostCol + itemDimensions.Columns - 1 > slotContainer.ContainerDimensions.Columns ||
+                topMostRow + itemDimensions.Rows - 1 > slotContainer.ContainerDimensions.Rows)
+                return true;
             
-            return true;
+            return false;
         }
     }
 }

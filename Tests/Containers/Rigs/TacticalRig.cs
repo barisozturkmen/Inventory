@@ -1,28 +1,26 @@
-using System;
-using System.Collections.Generic;
-using Inventory;
-using Inventory.Interfaces;
+using Inventory.Abstractions;
 
 namespace Inventory.Tests
 {
-    public class TacticalRig : ISegmentedContainer, IAttachmentContainerItem
+    public class TacticalRig : ComplexContainer
     {
-        public string Name { get; } = "Tactical Rig";
-        public IEnumerable<ISlotContainer> SubContainers { get; } = new[] 
-        { 
-            new SlotContainer(
-                "Integrated Pouch", 
-                new Dimensions(3,2)) 
-        };
+        public override string Name { get; } = "Tactical Rig";
 
-        public Dimensions ItemDimensions { get; } = new(3, 3);
-        public IEnumerable<Type> AllowedItems { get; } = new[] { typeof(IItem) };
+        public override List<ISlotContainer> SubContainers { get; } =
+        [
+            new Integrated1x2(),
+            new Integrated1x2(),
+            new Integrated1x2(),
+            new Integrated2x2()
+        ];
 
-        public IEnumerable<IAttachmentSlot> AttachmentSlots { get; } = new IAttachmentSlot[]
-        {
+        public override Dimensions ItemDimensions { get; } = new(3, 3);
+
+        public override List<AttachmentSlot> AttachmentSlots { get; } =
+        [
             new SmallPouchAttachmentSlot(),
-            new MediumPouchAttachmentSlot(),
-            new LargePouchAttachmentSlot()
-        };
+            new MediumPouchSlot(),
+            new LargePouchSlot()
+        ];
     }
 }

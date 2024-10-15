@@ -1,13 +1,10 @@
-using System;
-using System.Collections.Generic;
-using Inventory.Interfaces;
+using Inventory.Abstractions;
 
 namespace Inventory.Tests
 {
-    public class SmallPouchAttachmentSlot : IAttachmentSlot
+    public class SmallPouchAttachmentSlot : AttachmentSlot
     {
-        public string Name { get; } = "Small Pouch Slot";
-        public IItem? ContainedItem { get; set; } = null;
-        public IEnumerable<Type> AllowedItems { get; } = new[] { typeof(ISmallPouch) };
+        public override string Name { get; protected init; } = "Small Pouch Slot";
+        public override Allowed Allowed { get; protected init; } = Allowed.SmallPouches;
     }
 }

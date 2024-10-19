@@ -6,15 +6,33 @@ namespace Inventory.Interactions
     {
         public IInteractionTarget Target { get; protected init; }
 
-        public InteractionDestination(IInteractionTarget target)
+        protected InteractionDestination(IInteractionTarget target)
         {
             Target = target;
         }
     }
 
-    public class KnownDestination : InteractionDestination
+    public abstract class CompleteDestination : InteractionDestination
     {
-        public KnownDestination(IInteractionTarget target) 
+        protected CompleteDestination(IInteractionTarget target) 
+            : base(target)
+        {
+            
+        }
+    }
+    
+    public abstract class PartialDestination : InteractionDestination
+    {
+        protected PartialDestination(IInteractionTarget target) 
+            : base(target)
+        {
+            
+        }
+    }
+    
+    public abstract class InvalidDestination : InteractionDestination
+    {
+        protected InvalidDestination(IInteractionTarget target) 
             : base(target)
         {
             
@@ -25,7 +43,7 @@ namespace Inventory.Interactions
     /// When the target is a single item container such as a
     /// character equipment slot or attachment slot.
     /// </summary>
-    public class SingleContainerDestination : KnownDestination
+    public class SingleContainerDestination : CompleteDestination
     {
         public SingleContainerDestination(SingleContainer target) 
             : base(target)
@@ -39,7 +57,7 @@ namespace Inventory.Interactions
     /// moving item to specific slot location in
     /// a slot container.
     /// </summary>
-    public class SlotsDestination : KnownDestination
+    public class SlotsDestination : CompleteDestination
     {
         public Slot[] TargetSlots { get; set; }
 
@@ -50,6 +68,18 @@ namespace Inventory.Interactions
             TargetSlots = targetSlots;
         }
     }
+    
+    public class ContainerItemDestination : PartialDestination
+    {
+        public IContainerItem TargetItem { get; set; }
+
+        public ContainerItemDestination(IContainerItem targetItem) 
+            : base(targetItem)
+        {
+            TargetItem = targetItem;
+        }
+    }
+    
 
     /*/// <summary>
     /// When the item moved is stackable and the target

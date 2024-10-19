@@ -3,7 +3,7 @@ using Inventory.ItemCategories;
 
 namespace Inventory.Tests
 {
-    public class MediumMedicalPouch : SlotContainerItem, IMediumPouch
+    public class MediumStoragePouch : SlotContainerItem, IMediumPouch
     {
         public override string Name { get; } = "Medium Storage Pouch";
         public override Allowed Allowed { get; } = Allowed.All;

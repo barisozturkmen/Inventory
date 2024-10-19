@@ -37,7 +37,7 @@ namespace Inventory.Services
 
         }
 
-        public void HandleExecute(InteractionSelection selection, KnownDestination destination)
+        public void HandleExecute(InteractionSelection selection, CompleteDestination destination)
         {
             if (selection.Option == ActionOption.Move)
             {

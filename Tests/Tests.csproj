@@ -26,7 +26,6 @@
 
     <ItemGroup>
       <Folder Include="ItemContainers\" />
-      <Folder Include="Items\Attachments\WeaponMods\MainGripAttachments\" />
     </ItemGroup>
 
 </Project>

@@ -7,7 +7,7 @@ namespace Inventory.Interactions
         //change to visitor pattern
         public static IEnumerable<IContainer> GetSubContainers(this IContainer container)
         {
-            List<IContainer> subContainers = new();
+            List<IContainer> subContainers = [];
 
             if (container is ICharacterInventory characterInventory)
             {

@@ -8,6 +8,6 @@ namespace Inventory.Services
         void GetOptions(IItem item);
         void HandleSelect(InteractionSelection selection);
         bool HandleTargetOption(InteractionSelection selection, InteractionDestination destination);
-        void HandleExecute(InteractionSelection selection, KnownDestination destination);
+        void HandleExecute(InteractionSelection selection, CompleteDestination destination);
     }
 }

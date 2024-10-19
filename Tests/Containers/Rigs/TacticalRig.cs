@@ -18,7 +18,7 @@ namespace Inventory.Tests
 
         public override List<AttachmentSlot> AttachmentSlots { get; } =
         [
-            new SmallPouchAttachmentSlot(),
+            new SmallPouchSlot(),
             new MediumPouchSlot(),
             new LargePouchSlot()
         ];

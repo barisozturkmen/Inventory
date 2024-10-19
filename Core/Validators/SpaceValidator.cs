@@ -32,6 +32,9 @@ namespace Inventory.Validators
                 return false;
             
             Slot[] targetSlots = slotsDestination.TargetSlots;
+            if (SlotsNotInContainer(slotContainer, targetSlots))
+                return false;
+            
             if (AreSlotsOccupied(item, slotContainer, targetSlots))
                 return false;
 
@@ -39,6 +42,17 @@ namespace Inventory.Validators
                 return false;
 
             return true;
+        }
+
+        private static bool SlotsNotInContainer(ISlotContainer slotContainer, Slot[] targetSlots)
+        {
+            foreach (Slot slot in targetSlots)
+            {
+                if (!slotContainer.SlotsToItems.ContainsKey(slot))
+                    return true;
+            }
+            
+            return false;
         }
 
         // Reuse this for find slots
